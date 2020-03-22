@@ -7,6 +7,10 @@ class Practice:
         self.superType = super_type
         self.price = price
 
+    def to_dic(self):
+        return {'code': self.code, 'module': self.module, 'name': self.name, 'specialty': self.type,
+                'category': self.superType, 'price': self.price}
+
     def to_json(self):
         return '{' + f'"code": "{self.code}", "module":"{self.module}", "name":"{self.name}", "type":"{self.type}", "super_type":"{self.superType}", "price":"{self.price}"' + '}'
 
