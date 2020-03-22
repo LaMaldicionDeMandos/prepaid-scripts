@@ -4,6 +4,7 @@ from excel_loader import ExcelLoader
 import env_file
 import sys
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 
 ENV = env_file.get(path='.env-' + sys.argv[1])
 
@@ -13,11 +14,18 @@ db = mongoClient.prepaid
 
 practice_collenction = db.practices
 
+
 def find_practice(p_name, codes):
     for pr in codes:
         if pr.name == p_name:
             return pr
     return None
+
+
+def map_practice_to_mongo(pr):
+    mongo_practice = pr.to_dic()
+    mongo_practice['_id'] = str(ObjectId())
+    return mongo_practice
 
 
 practice_codes = PracticeCodeLoader(ENV['NOMENCLATOR']).practices
@@ -39,10 +47,7 @@ for row in rows:
         practice = Practice(practice_code.code, practice_code.module, name, type, super_type, practice_code.price)
         practices.append(practice)
 
-print()
-print("Comienzo a insertar las practicas")
 for practice in practices:
     print(practice.to_json())
 
-practice_collenction.insert_many(map(lambda p: p.to_dic(), practices))
-
+practice_collenction.insert_many(map(map_practice_to_mongo, practices))

@@ -12,7 +12,8 @@ class Practice:
                 'category': self.superType, 'price': self.price}
 
     def to_json(self):
-        return '{' + f'"code": "{self.code}", "module":"{self.module}", "name":"{self.name}", "type":"{self.type}", "super_type":"{self.superType}", "price":"{self.price}"' + '}'
+        return '{' + f'"code": "{self.code}", "module":"{self.module}", "name":"{self.name}", "type":"{self.type}", ' \
+                     f'"super_type":"{self.superType}", "price":"{self.price}"' + '}'
 
 
 class PracticeCode:

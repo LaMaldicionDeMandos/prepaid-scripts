@@ -4,3 +4,4 @@ openpyxl==3.0.3
 pycairo==1.18.2
 env-file==2019.4.13
 pymongo==3.10.1
+bson==0.5.9
