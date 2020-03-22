@@ -2,3 +2,4 @@ et-xmlfile==1.0.1
 jdcal==1.4.1
 openpyxl==3.0.3
 pycairo==1.18.2
+env-file==40.8.0
