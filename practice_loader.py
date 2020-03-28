@@ -17,7 +17,7 @@ practice_collenction = db.practices
 
 def find_practice(p_name, codes):
     for pr in codes:
-        if pr.name == p_name:
+        if pr.name.strip() == p_name.strip():
             return pr
     return None
 

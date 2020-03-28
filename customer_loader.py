@@ -25,6 +25,11 @@ def map_customer_to_mongo(pr):
     mongo_practice['_id'] = str(ObjectId())
     return mongo_practice
 
+
+def sanitize_list(x):
+    y = x.replace('”', '"').replace('“', '"').replace('", "', '","').split('","')
+    return list(map(lambda v: v.replace('"', '').strip(), y))
+
 entities = []
 for row in rows:
     entity_type = row[1].value
@@ -34,17 +39,16 @@ for row in rows:
         last_name = row[4].value
         first_name = row[5].value
         enrollment = row[6].value
-        """ Tengo que arreglar esto, porque alguna de las practicas tienen comas"""
-        specialties = list(map(lambda x: x.strip(), row[7].value.replace('”', '').replace('“', '').replace('"', '').split(',')))
-        practices = list(map(lambda x: x.strip(), row[8].value.replace('”', '').replace('“', '').replace('"', '').split(',')))
+        specialties = sanitize_list(row[7].value)
+        practices = sanitize_list(row[8].value)
         province = row[9].value
         city = row[10].value
         town = row[11].value
         address_street = row[12].value
-        address_number = row[13].value
+        address_number = int(row[13].value) if row[13].value is not None else None
         address_floor = row[14].value
         address_flat = row[15].value
-        phone = row[16].value
+        phone = str(int(row[16].value)) if row[16].value is not None else None
         email = row[17].value
         entity = HealthEntity(entity_type, business_name, fantasy_name, last_name, first_name, enrollment, specialties,
                               practices, province, city, town, address_street, address_number, address_floor,
