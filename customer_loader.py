@@ -26,9 +26,9 @@ def map_customer_to_mongo(pr):
     return mongo_practice
 
 
-def sanitize_list(x):
-    y = x.replace('”', '"').replace('“', '"').replace('", "', '","').split('","')
-    return list(map(lambda v: v.replace('"', '').strip(), y))
+def parseList(value):
+    return value
+
 
 entities = []
 for row in rows:
@@ -36,24 +36,22 @@ for row in rows:
     if entity_type is not None:
         business_name = row[2].value
         fantasy_name = row[3].value
-        last_name = row[4].value
-        first_name = row[5].value
-        enrollment = row[6].value
-        specialties = sanitize_list(row[7].value)
-        practices = sanitize_list(row[8].value)
+        name = row[4].value
+        enrollment = row[5].value
+        # Las listas de categorias, especialidades y practicas son listas separadas.
+        # Lo que si las practicas tienen que estar en la lista de especialidades y las especialidades tienen que estar en las categorias
+        categories = parseList(row[6].value)
+        specialties = parseList(row[7].value)
+        practices = parseList(row[8].value)
         province = row[9].value
         city = row[10].value
         town = row[11].value
-        address_street = row[12].value
-        address_number = int(row[13].value) if row[13].value is not None else None
-        address_floor = row[14].value
-        address_flat = row[15].value
-        phone = str(int(row[16].value)) if row[16].value is not None else None
-        email = row[17].value
-        entity = HealthEntity(entity_type, business_name, fantasy_name, last_name, first_name, enrollment, specialties,
-                              practices, province, city, town, address_street, address_number, address_floor,
-                              address_flat, phone, email)
+        address = row[12].value
+        phone = str(int(row[13].value)) if row[13].value is not None else None
+        email = row[14].value
+        entity = HealthEntity(entity_type, business_name, fantasy_name, name, enrollment, categories, specialties,
+                              practices, province, city, town, address, phone, email)
         entities.append(entity)
         print(entity.to_dic())
 
-customers_collenction.insert_many(map(map_customer_to_mongo, entities))
+#customers_collenction.insert_many(map(map_customer_to_mongo, entities))
